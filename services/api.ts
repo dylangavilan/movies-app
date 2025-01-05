@@ -7,3 +7,5 @@ export const api = axios.create({
         'Authorization': `Bearer ${process.env.EXPO_PUBLIC_API_KEY}`
     }
 })
+
+

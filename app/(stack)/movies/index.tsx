@@ -15,11 +15,10 @@ export default function HomeScreen() {
   }
 
   return (
-      <ScrollView>
-        <Text className="text-xl font-bold text-red-500">MOVIES</Text>
-        <Tabs />
+      <ScrollView className='bg-zinc-950 '>
+        <View className="p-20"></View>
+        <Text className="font-bold text-white text-3xl mt-4">En cartelera</Text>
         <Slider movies={nowPlaying ?? []} />
-
         {/* movies list */}
 
         <HorizontalMovies movies={upcoming ?? []} title="Proximos estrenos" />

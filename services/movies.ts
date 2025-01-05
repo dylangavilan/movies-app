@@ -1,7 +1,8 @@
 import { MovieResponse } from "@/infraestructure/interfaces/movies.response";
 import { api } from "./api"
 import { MovieMapper } from "@/infraestructure/mappers/movie.mapper";
-import { Movie } from "@/infraestructure/interfaces/movie.interface";
+import { Movie, MovieDetail } from "@/infraestructure/interfaces/movie.interface";
+import { MovieDetailResponse } from "@/infraestructure/interfaces/detail.response";
 
 
 type movieList = 'now_playing' | 'popular' | 'top_rated' | 'upcoming';
@@ -30,12 +31,14 @@ export const getGenres = async () => {
     }
 }
 
-export const getMovieByID = async (id: number) => {
+const getMovieByID = async (id: number | string): Promise<MovieDetail> => {
     try {
-        const response = await api.get(`${id}`);
-        return response.data;
+        const { data } = await api.get<MovieDetailResponse>(`${id}`);
+        const movie: MovieDetail = MovieMapper.mapDetailResponseToMovie(data);
+        return movie;
     } catch (error) {
         console.error(error);
+        throw new Error('Movie not found');
     }   
 }
 
@@ -46,4 +49,5 @@ export const moviesService = {
     upcoming: () => getMoviesList('upcoming'),  
     genres : () => getGenres(),
     getMoviesByGenre: getMoviesByGenre,
+    getMovieByID: getMovieByID
 }
