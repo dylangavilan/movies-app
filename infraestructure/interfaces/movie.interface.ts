@@ -24,9 +24,8 @@ export interface MovieDetail extends Movie {
     original_language: string;
     original_title: string;
     overview: string;
-    runtime: number;
+    runtime: string;
     status: string;
     video: boolean;
     vote_average: number;
-    actors: Actors[];
 }

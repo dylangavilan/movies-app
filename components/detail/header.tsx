@@ -1,17 +1,22 @@
 import { View, Text, Image } from 'react-native'
 import React from 'react'
+import { Ionicons } from '@expo/vector-icons'
+import { router } from 'expo-router'
 
 interface Props {
   poster: string
   back: string
   title: string
   date: string
-  duration: number
+  duration: string
 }
 
 const DetailHeader = ({ poster, back, date, duration, title }: Props) => {
   return (
     <>
+      <View className='absolute top-4 left-4 z-50'>
+        <Ionicons name='arrow-back' size={24} color='white' onPress={router.back}/>
+      </View>
       <View className="relative">
         <Image
           source={{

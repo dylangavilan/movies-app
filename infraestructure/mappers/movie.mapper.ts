@@ -2,6 +2,7 @@ import { Actors, Movie, MovieDetail } from "../interfaces/movie.interface";
 import { MovieResponse } from "../interfaces/movies.response";
 import { MovieDetailResponse } from "../interfaces/detail.response";
 import { ActorsResponse } from "../interfaces/cast.response";
+import { minutesToHours } from '../utils/utils';
 export class MovieMapper {
     static mapMovieResponseToMovie(movieResponse: MovieResponse): Movie {
         return {
@@ -24,7 +25,7 @@ export class MovieMapper {
             }
         })
     }
-    static mapDetailResponseToMovie(movieResponse: MovieDetailResponse, cast: Actors[]): MovieDetail {
+    static mapDetailResponseToMovie(movieResponse: MovieDetailResponse): MovieDetail {
         return {
             adult: movieResponse.adult,
             back: `https://image.tmdb.org/t/p/w500/${movieResponse.backdrop_path}`,
@@ -41,11 +42,10 @@ export class MovieMapper {
             original_language: movieResponse.original_language,
             original_title: movieResponse.original_title,
             overview: movieResponse.overview,
-            runtime: movieResponse.runtime,
+            runtime: minutesToHours(movieResponse.runtime),
             status: movieResponse.status,
             video: movieResponse.video,
             vote_average: movieResponse.vote_average,
-            actors: cast
         }
     }
 }
