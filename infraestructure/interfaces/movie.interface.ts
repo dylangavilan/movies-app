@@ -10,6 +10,12 @@ export interface Movie {
     vote_count: number;
 }
 
+export interface Actors {
+    character: string,
+    name: string,
+    profile_path: string
+}
+
 export interface MovieDetail extends Movie {
     genres: string[];
     homepage: string;
@@ -22,4 +28,5 @@ export interface MovieDetail extends Movie {
     status: string;
     video: boolean;
     vote_average: number;
+    actors: Actors[];
 }

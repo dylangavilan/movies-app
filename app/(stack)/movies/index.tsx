@@ -8,6 +8,7 @@ import { FlatList, Image, SafeAreaView, ScrollView, Text, View } from "react-nat
 
 export default function HomeScreen() {
   const { nowPlaying, isFetching, isLoading, upcoming, populars, topRated } = useMovies();
+  
   if(isFetching || isLoading) {
     return <View style={{flex: 1}}>
       <Ionicons name='refresh-circle' size={24} color="black" />

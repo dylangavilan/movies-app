@@ -1,6 +1,7 @@
-import { Movie, MovieDetail } from "../interfaces/movie.interface";
+import { Actors, Movie, MovieDetail } from "../interfaces/movie.interface";
 import { MovieResponse } from "../interfaces/movies.response";
 import { MovieDetailResponse } from "../interfaces/detail.response";
+import { ActorsResponse } from "../interfaces/cast.response";
 export class MovieMapper {
     static mapMovieResponseToMovie(movieResponse: MovieResponse): Movie {
         return {
@@ -14,8 +15,16 @@ export class MovieMapper {
             vote_count: movieResponse.vote_count
         }
     }
-    
-    static mapDetailResponseToMovie(movieResponse: MovieDetailResponse): MovieDetail {
+    static actorsMapper(actors: ActorsResponse): Actors[] {
+        return actors.cast.map((actor: any) => {
+            return {
+                character: actor.character,
+                name: actor.name,
+                profile_path: actor.profile_path ? `https://image.tmdb.org/t/p/w500/${actor.profile_path}` : ''
+            }
+        })
+    }
+    static mapDetailResponseToMovie(movieResponse: MovieDetailResponse, cast: Actors[]): MovieDetail {
         return {
             adult: movieResponse.adult,
             back: `https://image.tmdb.org/t/p/w500/${movieResponse.backdrop_path}`,
@@ -35,8 +44,8 @@ export class MovieMapper {
             runtime: movieResponse.runtime,
             status: movieResponse.status,
             video: movieResponse.video,
-            vote_average: movieResponse.vote_average
+            vote_average: movieResponse.vote_average,
+            actors: cast
         }
-
     }
 }

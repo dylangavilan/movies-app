@@ -1,19 +1,17 @@
 import { MovieResponse } from "@/infraestructure/interfaces/movies.response";
 import { api } from "./api"
 import { MovieMapper } from "@/infraestructure/mappers/movie.mapper";
-import { Movie, MovieDetail } from "@/infraestructure/interfaces/movie.interface";
+import { Actors, Movie, MovieDetail } from "@/infraestructure/interfaces/movie.interface";
 import { MovieDetailResponse } from "@/infraestructure/interfaces/detail.response";
+import { ActorsResponse } from "@/infraestructure/interfaces/cast.response";
 
 
 type movieList = 'now_playing' | 'popular' | 'top_rated' | 'upcoming';
 
 export const getMoviesList = async (list: movieList):Promise<Movie[]> => {
     const { data } = await api.get<MovieResponse>(`${list}?language=es-AR`);
-    console.log(JSON.stringify(data, null, 2))
-
     const movies: Movie[] = data.results.map(MovieMapper.mapMovieResponseToMovie);
-    return movies;
-  
+    return movies; 
 }
 
 export const getMoviesByGenre = async(genre_id: number): Promise<Movie[]> => {
@@ -34,12 +32,21 @@ export const getGenres = async () => {
 const getMovieByID = async (id: number | string): Promise<MovieDetail> => {
     try {
         const { data } = await api.get<MovieDetailResponse>(`${id}`);
-        const movie: MovieDetail = MovieMapper.mapDetailResponseToMovie(data);
+        const actors = await getActors(id.toString());
+        const movie: MovieDetail = MovieMapper.mapDetailResponseToMovie(data, actors);
+
         return movie;
     } catch (error) {
         console.error(error);
         throw new Error('Movie not found');
     }   
+}
+
+const getActors = async (movieId: string): Promise<Actors[]> => {
+    const { data } = await api.get<ActorsResponse>(`${movieId}/credits`)
+    console.log(JSON.stringify(data, null, 2))
+
+    return MovieMapper.actorsMapper(data)
 }
 
 export const moviesService = {
